@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <form id="uploadForm" enctype="multipart/form-data">
+        文件:<input type="file" name="file" multiple="multiple"/><br>
+    </form>
+    <button id="upload">上传文件</button>
+    </br>
+    <a id="downloadTemplate" style="color:blue;">下载文件</a>
+</body>
+<script type="text/javascript">
+    $(function () {
+
+        $("#upload").click(function () {
+            var formData = new FormData($('#uploadForm')[0]);
+            $.ajax({
+                type: 'post',
+                url: "http://localhost:8080/article/uploadFile",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    alert(data);
+                },
+                error: function(data){
+                    alert("上传失败");
+                }
+            })
+        });
+
+        $("#downloadTemplate").click(function () {
+            download();
+        });
+    });
+    
+    download = function(){
+        downloadTemplate('http://localhost:8080/article/downloadFile','filename','test');
+    }
+
+    function downloadTemplate(action,type,value){
+
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.style.display="none";
+        form.action = action;
+        form.method = "post";
+
+        var newElement = document.createElement("input");
+        newElement.setAttribute("type","hidden");
+        newElement.name = value;
+        form.appendChild(newElement);
+        form.submit();
+    }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
